@@ -1,0 +1,445 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+/* ── Theme Tokens ─────────────────────────────────────────────────────────
+   SkillHub visual identity: a "ledger" system — courses read like catalog
+   entries in a serious, well-kept transcript. Serif display for headlines,
+   a plain grotesque for body copy, monospace for codes/data/meta. Dark,
+   graphite-and-brass palette by default; flat surfaces, hairline rules,
+   no blur, no soft gradient blobs.
+   ────────────────────────────────────────────────────────────────────── */
+:root {
+  --font-heading: 'Fraunces', serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --radius-sm: 3px;
+  --radius-md: 5px;
+  --radius-lg: 7px;
+  --radius-xl: 10px;
+  --transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Dark (default) */
+  --bg: #0b0d10;
+  --surface: #14171b;
+  --surface-2: #1b1f24;
+  --accent: #c9a24b;
+  --accent-strong: #e0bd6c;
+  --accent-soft: rgba(201, 162, 75, 0.14);
+  --accent-gradient: linear-gradient(135deg, #c9a24b 0%, #8c6a2e 100%);
+  --text-main: #ece8e0;
+  --text-secondary: #a2a7ad;
+  --text-muted: #666c73;
+  --border: #262b31;
+  --success: #5c9c77;
+  --warning: #c9a24b;
+  --error: #b8615c;
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 10px 24px -14px rgba(0, 0, 0, 0.7);
+  --shadow-hover: 0 18px 36px -16px rgba(0, 0, 0, 0.75);
+
+  /* Back-compat aliases (older components reference these names) */
+  --primary: var(--accent);
+  --primary-light: var(--accent-soft);
+  --primary-gradient: var(--accent-gradient);
+  --glass: var(--surface);
+  --glass-border: var(--border);
+}
+
+[data-theme='light'] {
+  --bg: #f2efe6;
+  --surface: #ffffff;
+  --surface-2: #eae6d9;
+  --accent: #96721f;
+  --accent-strong: #7c5e19;
+  --accent-soft: rgba(150, 114, 31, 0.12);
+  --accent-gradient: linear-gradient(135deg, #96721f 0%, #6c5216 100%);
+  --text-main: #1a1c1e;
+  --text-secondary: #52565c;
+  --text-muted: #8a8e93;
+  --border: #ded8c4;
+  --success: #3f7d57;
+  --warning: #96721f;
+  --error: #a23e3a;
+  --shadow: 0 1px 0 rgba(0, 0, 0, 0.02) inset, 0 10px 24px -16px rgba(26, 20, 10, 0.18);
+  --shadow-hover: 0 18px 36px -18px rgba(26, 20, 10, 0.24);
+}
+
+/* ── Reset ────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg);
+  color: var(--text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  transition: var(--transition);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* ── Layout ───────────────────────────────────────────────────────────── */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Signature: eyebrow labels (mono, tracked-out, for section/kicker text) ── */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* ── Signature: ledger tag — the course "catalog code" chip ─────────────── */
+.ledger-tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 3px 8px;
+}
+
+/* ── Signature: tick meter — progress rendered as a ruler, not a gradient pill ── */
+.tick-meter {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.tick-meter .tick {
+  flex: 1;
+  height: 10px;
+  background: var(--border);
+  border-radius: 1px;
+}
+
+.tick-meter .tick.filled {
+  background: var(--accent);
+}
+
+/* ── Hairline rule ────────────────────────────────────────────────────── */
+.rule {
+  height: 1px;
+  background: var(--border);
+  border: none;
+}
+
+/* ── Navbar ───────────────────────────────────────────────────────────── */
+.nav {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: var(--transition);
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────── */
+.btn {
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition);
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #14171b;
+}
+
+.btn-primary:hover {
+  background: var(--accent-strong);
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-main);
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── Cards ────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  overflow: hidden;
+}
+
+.card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-hover);
+}
+
+/* ── Forms ────────────────────────────────────────────────────────────── */
+.input-group {
+  margin-bottom: 22px;
+}
+
+.input-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.01em;
+}
+
+.input-field {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  transition: var(--transition);
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--surface);
+}
+
+.input-field:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Search Bar ───────────────────────────────────────────────────────── */
+.search-bar {
+  flex: 1;
+  max-width: 480px;
+  margin: 0 32px;
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 11px 18px 11px 44px;
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 0.875rem;
+  transition: var(--transition);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--surface);
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* ── Utilities ────────────────────────────────────────────────────────── */
+.text-gradient {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glass-morphism {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.modern-hero {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+/* ── Animations ───────────────────────────────────────────────────────── */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-spin {
+  animation: spin 0.8s linear infinite;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.animate-pulse {
+  animation: pulse 2s ease infinite;
+}
+
+/* ── Auth Page ────────────────────────────────────────────────────────── */
+.auth-wrapper {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 0.85fr 1fr;
+}
+
+.auth-panel-left {
+  background: var(--surface-2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 60px;
+  color: var(--text-main);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-panel-right {
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .search-bar {
+    max-width: 300px;
+    margin: 0 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .auth-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-panel-left {
+    display: none;
+  }
+
+  .auth-panel-right {
+    padding: 32px 20px;
+  }
+
+  .container {
+    padding: 0 16px;
+  }
+}
+
+/* ── Custom Scrollbar ─────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
